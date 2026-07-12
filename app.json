@@ -1,0 +1,37 @@
+{
+  "expo": {
+    "name": "White Noise For Sleeping",
+    "slug": "white-noise-for-sleeping",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "backgroundColor": "#0a0a1a",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "backgroundColor": "#0a0a1a",
+      "resizeMode": "contain"
+    },
+    "ios": {
+      "bundleIdentifier": "com.kazehubttv.whitenoiseforsleeping",
+      "supportsTablet": true,
+      "infoPlist": {
+        "UIBackgroundModes": ["audio"]
+      }
+    },
+    "android": {
+      "package": "com.kazehubttv.whitenoiseforsleeping",
+      "versionCode": 1,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#0a0a1a"
+      }
+    },
+    "extra": {
+      "privacyPolicyUrl": "https://kazehubttv.github.io/white-noise-for-sleeping/assets/privacy.html"
+    },
+    "plugins": [
+      "expo-av"
+    ]
+  }
+}
