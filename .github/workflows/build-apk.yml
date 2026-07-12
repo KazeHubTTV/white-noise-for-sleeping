@@ -19,10 +19,12 @@ jobs:
           node-version: 20
           cache: npm
 
-      - run: npm ci
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
 
-      - name: Install EAS CLI
-        run: npm install -g eas-cli
+      - run: npm ci
 
       - name: Generate audio files
         run: node scripts/generate-noise.js
@@ -30,15 +32,14 @@ jobs:
       - name: Generate assets
         run: node scripts/generate-assets.js
 
-      - name: Build APK with EAS
-        run: eas build --platform android --profile apk --non-interactive --wait
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Prebuild native project
+        run: npx expo prebuild --platform android --clean
 
-      - name: Download APK
-        run: eas build:download --platform android --profile apk --non-interactive --output app-release.apk
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Build debug APK
+        run: cd android && ./gradlew assembleDebug
+
+      - name: Rename APK
+        run: mv android/app/build/outputs/apk/debug/app-debug.apk app-release.apk
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
