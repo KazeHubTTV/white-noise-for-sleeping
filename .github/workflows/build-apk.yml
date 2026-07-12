@@ -1,0 +1,50 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate audio files
+        run: node scripts/generate-noise.js
+
+      - name: Generate assets
+        run: node scripts/generate-assets.js
+
+      - name: Build APK with EAS
+        run: npx eas build --platform android --profile apk --non-interactive --wait
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Download APK
+        run: npx eas build:download --platform android --profile apk --non-interactive --output app-release.apk
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: White Noise For Sleeping v${{ github.run_number }}
+          body: |
+            Auto-built APK for Android.
+            
+            ## Install
+            1. Download the `app-release.apk` file below
+            2. Open it on your Android device
+            3. Allow installation from unknown sources if prompted
+          files: app-release.apk
+          generate_release_notes: false
