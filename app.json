@@ -31,7 +31,12 @@
       "privacyPolicyUrl": "https://kazehubttv.github.io/white-noise-for-sleeping/assets/privacy.html"
     },
     "plugins": [
-      "expo-av"
+      "expo-av",
+      ["expo-build-properties", {
+        "android": {
+          "kotlinVersion": "1.9.25"
+        }
+      }]
     ]
   }
 }
