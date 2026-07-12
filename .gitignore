@@ -9,3 +9,6 @@ dist/
 *.orig.*
 web-build/
 .expo-shared/
+
+# Audio files — regenerate with: npm run generate-noise
+assets/audio/*.wav
